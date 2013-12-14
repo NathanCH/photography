@@ -1,6 +1,7 @@
 /* Style Sheet */
 body{ 
 	position: fixed;
+	background-color: black;
 	top: 0;
 	left: 0;
 	width: 100%;
@@ -10,7 +11,6 @@ body{
 }
 .photo,
 .preloader-photo{
-	background-image: url('../imgs/photos/01.jpg');
 	background-size: cover;
 	background-color: black;
 	position: absolute;
@@ -20,6 +20,7 @@ body{
 	right: 0;
 	height: 100%;
 	width: 100%;
+	opacity: 0; /* Start black */
 }
 	.photo{ z-index: 100; }
 	.preloader-photo{ z-index: 50 }
@@ -29,7 +30,7 @@ body{
 	position: absolute;
 	left: 12%;
 	bottom: 12%;
-	z-index: 150;
+	z-index: 200;
 }
 .logo{
 	width: 121px;
