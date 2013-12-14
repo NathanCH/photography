@@ -1,0 +1,70 @@
+/* Style Sheet */
+body{ 
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+	margin: 0px;
+}
+.photo,
+.preloader-photo{
+	background-image: url('../imgs/photos/01.jpg');
+	background-size: cover;
+	background-color: black;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 100%;
+	width: 100%;
+}
+	.photo{ z-index: 100; }
+	.preloader-photo{ z-index: 50 }
+.decoration{
+	width: 325px;
+	height: 57px;
+	position: absolute;
+	left: 12%;
+	bottom: 12%;
+	z-index: 150;
+}
+.logo{
+	width: 121px;
+	height: 57px;
+	position: absolute;
+	cursor: pointer;
+}
+	.logo img{
+		border-left: 0 solid white; /* Required */
+	}
+.contact{
+	position: absolute;
+	right: 0px;
+	top: 32%;
+	color: white;
+	opacity: 0;
+	margin-right: 15px;
+}
+	.contact a{
+		font: 14px 'Noto Sans', sans-serif;
+		color: white;
+		text-decoration: none;
+		letter-spacing: 1px;
+	}
+	.contact i{
+		font-size: 12px;
+		color: #DDD;
+		margin-right: 5px;
+	}
+.preloader{
+	width: 100%;
+	height: 2px;
+	background-color: #ffa200;
+	position: absolute;
+	top: 0;
+	width: 0%;
+	z-index: 200;
+}
