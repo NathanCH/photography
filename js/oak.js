@@ -1,182 +1,153 @@
-$(function(){
-	
-	// Fade in animation.
-	function fadeItIn(){
-		$('.contact').animate({
-			opacity: 1,
-			marginRight: '0px'
-		}, 100, function(){
-			eventsBegun = true;
-		});
-	}
-	
-	// Fade out animation.
-	function fadeItOut(){
-		$('.contact').animate({
-			opacity: 0
-		}, 2000);	
-	}
-	
-	// Time out mouse.
-	function waitToFade(){
-		setTimeout(function(){
-			fadeItOut();
-		}, 2000)
-	}
-	
-	// Fade Preloader
-	function fadePreloader(){
-		$('.preloader').delay(750).animate({
-			opacity: 0
-		}, 150);
-	}
-	
-	// Function to change number.
-	function manipulateNumber(number, direction, amount){
-		if(amount == null){
-			amount = 1;
-		}
-		if(direction == 'subtract'){
-			number = number - parseInt(amout);
-			console.log(number);
-			return number;
-		}else if(direction == 'add'){
-			number = number + parseInt(amount);
-			console.log(number);
-			return number;			
-		}
-	}
-	
-	// Function to handle next image.
-	function prepareNextImg(e, photo){
-		var pathToImage = 'imgs/photos/' + photo;
-		
+// Create gallery object.
+var PhotoGallery = {
+
+	// Initialize App.
+	init: function(settings){
+		// Tell the world.
+		console.log('App Initiated');
+
+		// Configure App.
+		PhotoGallery.config = {
+			// Where the images will be displayed.
+			$photoPlaceHolder: $('.photo'),
+			// Path to images.
+			photoFolderPath: "imgs/photos/lowfi/",
+			// Value will be updated.
+			photosInDirectory: "0",
+			// Start at photo...
+			currentPhoto : 0,
+			// The List of Photos
+			photoList : ""
+		},
+
+		// Run method to grab image list.
+		PhotoGallery.updatePhotoList();
+	},
+
+	updatePhotoList: function(result){
 		$.ajax({
+			type: 'POST',
+			url: 'functions/get_image.php',
+			dataType: 'json',
+			cache: false,
+			success: function(result){
+				// Count photos and update app config value.
+				PhotoGallery.config.photosInDirectory = result.length;
+				// Update photo list.
+				PhotoGallery.config.photoList = result;
+				// Reload current photo incase order has changed.
+				PhotoGallery.loadPhoto(PhotoGallery.config.currentPhoto);
+				// return JSON list of all images in directory.
+				return result;
+			}
+		});
+	},
+
+	updateCurrent: function(direction){
+		if(direction == 'next'){
+			if(PhotoGallery.config.currentPhoto == PhotoGallery.config.photosInDirectory - 1){
+				PhotoGallery.config.currentPhoto = 0;
+			}else{
+				PhotoGallery.config.currentPhoto = PhotoGallery.config.currentPhoto + 1;
+			}
+		}
+		if(direction == 'prev'){
+			if(PhotoGallery.config.currentPhoto == 0){
+				PhotoGallery.config.currentPhoto = 14;
+			}else{
+				PhotoGallery.config.currentPhoto = PhotoGallery.config.currentPhoto - 1;
+			}
+		}
+
+		// Tell what photo we're on.
+		console.log(PhotoGallery.config.currentPhoto);
+
+		// Fade image out and load current photo.
+		PhotoGallery.config.$photoPlaceHolder.fadeOut(100, function(){
+			PhotoGallery.loadPhoto(PhotoGallery.config.currentPhoto);			
+		});
+	},
+
+	// Method to load what ever image we want and to place it on the div.
+	loadPhoto: function(current){
+
+		// Current photo.
+		var photo = PhotoGallery.config.photoList[current];
+
+		// Grab current image name and build path.
+		var pathToImage = PhotoGallery.config.photoFolderPath + photo;
+
+		// Load the image.
+		$.ajax({
+			type: 'GET',
+			url: pathToImage,
+			data: {},
+			cache: true,
 			xhr: function(){
-				
-				// Thanks HTML5!
+				// Create object to access data from server.
 				var xhr = new window.XMLHttpRequest();
-				
 				// Download progress.
 				xhr.addEventListener("progress", function(event){
-					// Calculate % laoded.
+					// When the length is being computed...
 					if(event.lengthComputable){
-						var percenteLoaded = (event.loaded / event.total)*100;
-						// Animate .preloader width.
-						$('.preloader').css('width', percenteLoaded + '%');
-						//console.log(percenteLoaded);
+						// Calculate % loaded.
+						var percentLoaded = (event.loaded / event.total)*100;
+						// Run preloader.
+						PhotoGallery.preloader(percentLoaded, true);
+						// Tell how much has loaded.
+						console.log(percentLoaded);
 					}
-				}, false);
-				return xhr;
-			},
-			type: 'POST',
-			url: pathToImage.replace('-', ''),
-			data: {},
-			beforeSend: function(data){
-				// Apply loading image to div z-indexed below current image.
-				$('.preloader-photo').css('background-image', 'url('+ pathToImage.replace('-', '') +')');
-				$('.preloader-photo').css('opacity', '1');
-			},
-			success: function(data){
-				// Fade current image to reveal new image.
-				$('.photo').animate({
-					opacity: 0
-				}, 600, function(){
-					$('.preloader-photo').css("z-index" , "150");
-					$('.photo').css("opacity" , "1");
-				}, 0, function(){
-					$('.photo').css('background-image', 'url('+ pathToImage.replace('-', '') +')');
+				},
+				false);
+				// when the request has completed show the image.
+				xhr.addEventListener("load", function(){
+					// Update background-image with current photo.
+					PhotoGallery.config.$photoPlaceHolder.css('background-image', 'url('+pathToImage+')');
+
+					// Hide preloader.
+					PhotoGallery.preloader('0', false);
+					PhotoGallery.config.$photoPlaceHolder.fadeIn(1000);
 				});
-				// Fade preloader afer success.
-				fadePreloader();
-				//console.log(pathToImage);
+				return xhr;
 			}
-				
 		});
-	}
-	
-	
-	// Set up controls
-	function controls(state, images){
-		
-		// Make sure they're enabled.
-		if(state == 'enabled'){
-			// Set index.
-			countImages = images.length;
-			index = 1;
-			
-			$('body').keydown(function(e){
-				if(index < countImages || (e.keyCode || e.which) == 37){
-					
-					console.log(index);
-					// Left.	
-					if( (e.keyCode || e.which) == 37 ){
-						prepareNextImg(e, images[index]);
-						index--;
-					}
-					// Right.
-					if( (e.keyCode || e.which) == 39 ){
-						prepareNextImg(e, images[index]);
-						index++;
-					}
-				
-				}else if(index == countImages){
-					console.log('ok');
-					index = images.length -1;
-					$('.preloader-photo, .photo').animate({
-						left : '-3%'
-					},75, function(){
-						$('.preloader-photo, .photo').animate({
-							left : '0%'
-						});
-					});
-				}
-			});
+	},
 
+
+	// Method to update preloader status.
+	preloader: function(width, display){
+		// If we want to display it...
+		if(display == true){
+			$('.preloader').css('display', 'block');
+			$('.preloader').css('width', width + '%');
+		}else if(display == false){
+			$('.preloader').css('display', 'none');
 		}
+	},
+
+	// Method to animate photo position.
+	animatePhoto: function(){
+
 	}
-	
-	
-	
-	
-	
-	// Toggle fading logo effect.
-	var eventsBegun = false;
-		
-	// Contact Hover
-	$('.decoration').hover(function(){
-		fadeItIn();
-		waitToFade();
-	});
-	
-	// Reset fadeout.
-	$('.decoration').mousemove(function(){
-		if(eventsBegun = true){
-			$('.contact').stop();
-			fadeItIn();
-		}
+
+};
+
+$(document).ready(function(){
+
+	// Initialize application.
+	PhotoGallery.init();
+
+	$('#nextPhoto').click(function(){
+		PhotoGallery.updateCurrent('next');
 	});
 
-	
-	// Grab JSON image list.
-	$.ajax({
-		type: 'POST',
-		url: 'functions/get_image.php',
-		dataType: 'json',
-		cache: false,
-		success: function(result){
-			var image_list = result;
-			// Apply first result to container.
-			$('.photo').css('background-image', 'url(imgs/photos/'+ result[0] +')');
-			// Fade in container.
-			$('.photo').animate({
-				opacity: 1
-			}, 1000);
-			controls('enabled', image_list);
-		}
+	$('#prevPhoto').click(function(){
+		PhotoGallery.updateCurrent('prev');
 	});
-	
-	
+
+	$('#getSomething').click(function(){
+		PhotoGallery.loadPhoto(PhotoGallery.config.currentPhoto);
+	});
 
 
 });

@@ -1,12 +1,11 @@
 <?php
-// Nathan Charrois
 // Generate JSON image list from directory.
 
 // Create array.
 $image_list = array();
 
 // Open /imgs/photos directory.
-if ($handle = opendir('../imgs/photos')){
+if ($handle = opendir('../imgs/photos/lowfi')){
 	
 	// Push each item to image list array.
 	while(false !== ($entry = readdir($handle))){
@@ -20,6 +19,6 @@ if ($handle = opendir('../imgs/photos')){
 
 closedir($handle);
 
-// Echo array to json.
+//Array to json.
 echo json_encode($image_list);
 

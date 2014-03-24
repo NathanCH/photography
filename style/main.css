@@ -1,18 +1,15 @@
 /* Style Sheet */
 body{ 
 	position: fixed;
-	background-color: black;
 	top: 0;
 	left: 0;
 	width: 100%;
 	height: 100%;
 	z-index: 1;
 	margin: 0px;
+	background: black;
 }
-.photo,
-.preloader-photo{
-	background-size: cover;
-	background-color: black;
+.photo{
 	position: absolute;
 	top: 0;
 	bottom: 0;
@@ -20,15 +17,14 @@ body{
 	right: 0;
 	height: 100%;
 	width: 100%;
-	opacity: 0; /* Start black */
+	z-index: 100;
+	background-size: cover;
 }
-	.photo{ z-index: 100; }
-	.preloader-photo{ z-index: 50 }
 .decoration{
 	width: 325px;
 	height: 57px;
 	position: absolute;
-	left: 12%;
+	left: 10%;
 	bottom: 12%;
 	z-index: 200;
 }
@@ -68,4 +64,17 @@ body{
 	top: 0;
 	width: 0%;
 	z-index: 200;
+	box-shadow: 2px 0 5px white;
+}
+
+/* Debug */
+#test-block{
+	padding: 15px;
+	background: rgba(255,255,255,.2);
+	color: #555;
+	font-family: "Open Sans", Arial;
+	width: 235px;
+	margin: 10px;
+	position: relative;
+	z-index: 600;
 }
