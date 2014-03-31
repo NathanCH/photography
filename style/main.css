@@ -1,80 +1,165 @@
-/* Style Sheet */
-body{ 
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	z-index: 1;
-	margin: 0px;
-	background: black;
-}
-.photo{
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	height: 100%;
-	width: 100%;
-	z-index: 100;
-	background-size: cover;
-}
-.decoration{
-	width: 325px;
-	height: 57px;
-	position: absolute;
-	left: 10%;
-	bottom: 12%;
-	z-index: 200;
-}
-.logo{
-	width: 121px;
-	height: 57px;
-	position: absolute;
-	cursor: pointer;
-}
-	.logo img{
-		border-left: 0 solid white; /* Required */
+/* Helper Classes
+ * ==============
+ */
+ 	/* Floating */
+	.left{ float: left; }
+	.right{ float: right; }
+	.clear:before,
+	.clear:after { 
+		content: " ";
+		display: table;
 	}
-.contact{
-	position: absolute;
-	right: 0px;
-	top: 32%;
-	color: white;
-	opacity: 0;
-	margin-right: 15px;
-}
-	.contact a{
-		font: 14px 'Noto Sans', sans-serif;
-		color: white;
-		text-decoration: none;
-		letter-spacing: 1px;
+	.clear:after{
+		clear: both;
 	}
-	.contact i{
-		font-size: 12px;
-		color: #DDD;
-		margin-right: 5px;
-	}
-.preloader{
-	width: 100%;
-	height: 2px;
-	background-color: #ffa200;
-	position: absolute;
-	top: 0;
-	width: 0%;
-	z-index: 200;
-	box-shadow: 2px 0 5px white;
-}
 
-/* Debug */
-#test-block{
-	padding: 15px;
-	background: rgba(255,255,255,.2);
-	color: #555;
-	font-family: "Open Sans", Arial;
-	width: 235px;
-	margin: 10px;
-	position: relative;
-	z-index: 600;
-}
+
+/* Layout
+ * ==============
+ */
+ 	/* Photo placement */
+	html{ height: 100%; }
+
+	.photo,
+	body{
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		height: 100%;
+		width: 100%;
+		z-index: 100;
+		background-size: cover;
+	}
+
+/* Page Elements
+ * ==============
+ */
+
+	/* Identity */
+	.decoration{
+		width: 325px;
+		height: 57px;
+		position: absolute;
+		left: 10%;
+		bottom: 12%;
+		z-index: 200;
+	}
+
+	.logo{
+		width: 121px;
+		height: 57px;
+		position: absolute;
+		cursor: pointer;
+	}
+		.logo img{
+			border-left: 0 solid white; /* Required */
+		}
+	/* Contact Charm */
+	.contact{
+		position: absolute;
+		right: 0px;
+		top: -24%;
+		color: white;
+
+	}
+		.contact a{
+			font: 14px 'Noto Sans', sans-serif;
+			color: white;
+			text-decoration: none;
+			letter-spacing: 1px;
+			padding: 10% 0 10% 45%;
+			opacity: 0;
+			display: block;
+			-webkit-transition: opacity .25s ease-in-out;
+			-moz-transition: opacity .25s ease-in-out;
+			-ms-transition: opacity .25s ease-in-out;
+			-o-transition: opacity .25s ease-in-out;
+			transition: opacity .25s ease-in-out;
+		}
+			.contact a:hover{
+				zoom: 1;
+				filter: alpha(opacity=50);
+				opacity: 1;
+			}
+
+		.contact i{
+			font-size: 12px;
+			color: #DDD;
+			margin-right: 5px;
+		}
+
+	/* Controls */
+	.controls{
+		z-index: 200;
+		position: absolute;
+		right: 10%;
+		bottom: 12%;
+		-webkit-transition: opacity .25s ease-in-out;
+		-moz-transition: opacity .25s ease-in-out;
+		-ms-transition: opacity .25s ease-in-out;
+		-o-transition: opacity .25s ease-in-out;
+		transition: opacity .25s ease-in-out;
+		opacity: .35;
+		padding: 50px 0 0 50px;
+	}
+		.controls:hover{
+			zoom: 1;
+			filter: alpha(opacity=50);
+			opacity: 1;
+		}
+
+	.control{
+		width: 46px;
+		height: 50px;
+		text-align: center;
+		text-transform: uppercase;
+		color: white;
+		font-family: "Ubuntu Mono", Arial;
+		margin: 0 10px;
+		cursor: pointer;
+		-webkit-touch-callout: none;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+	}
+		.control-prev{ background: url('../imgs/controls.png'); }
+		.control-prev:active,
+		.control-prev.active{ background: url('../imgs/controls.png') 0 50px; }
+		.control-next{ background: url('../imgs/controls.png') 50px 0; }
+		.control-next:active,
+		.control-next.active{ background: url('../imgs/controls.png') 50px 50px; }
+
+
+	/* Preloader */
+	.preloader-container{
+		position: absolute;
+		bottom: 7%;
+		left: 10%;
+		right: 10%;
+	}
+	.preloader{
+		width: 100%;
+		height: 2px;
+		background-color: #ffa200;
+		position: relative;
+		width: 0%;
+		z-index: 200;
+	}
+
+
+/* Debug
+ * ==============
+ */
+
+	#test-block{
+		padding: 15px;
+		background: rgba(255,255,255,.2);
+		color: #555;
+		font-family: "Open Sans", Arial;
+		width: 120px;
+		margin: 10px;
+		position: relative;
+		z-index: 600;
+	}

@@ -101,12 +101,20 @@ var PhotoGallery = {
 				false);
 				// when the request has completed show the image.
 				xhr.addEventListener("load", function(){
+
 					// Update background-image with current photo.
 					PhotoGallery.config.$photoPlaceHolder.css('background-image', 'url('+pathToImage+')');
 
 					// Hide preloader.
 					PhotoGallery.preloader('0', false);
-					PhotoGallery.config.$photoPlaceHolder.fadeIn(1000);
+
+					// Fade in image.
+					PhotoGallery.config.$photoPlaceHolder.fadeIn(750, function(){
+						// Also set photo as background on body tag <body> to allow photos to cross fade.
+						$('body').css('background-image', 'url('+pathToImage+')');
+					});
+
+
 				});
 				return xhr;
 			}
@@ -115,19 +123,18 @@ var PhotoGallery = {
 
 
 	// Method to update preloader status.
-	preloader: function(width, display){
+	preloader: function(w, display){
 		// If we want to display it...
 		if(display == true){
-			$('.preloader').css('display', 'block');
-			$('.preloader').css('width', width + '%');
+			$('.preloader').animate({
+				opacity: '100'
+			}, 0);
+			$('.preloader').css('width', w + '%');
 		}else if(display == false){
-			$('.preloader').css('display', 'none');
+			$('.preloader').animate({
+				opacity: '0'
+			}, 0);
 		}
-	},
-
-	// Method to animate photo position.
-	animatePhoto: function(){
-
 	}
 
 };
@@ -137,17 +144,40 @@ $(document).ready(function(){
 	// Initialize application.
 	PhotoGallery.init();
 
-	$('#nextPhoto').click(function(){
-		PhotoGallery.updateCurrent('next');
-	});
-
-	$('#prevPhoto').click(function(){
+	// Previous photo button.
+	$('.control-prev').click(function(){
 		PhotoGallery.updateCurrent('prev');
 	});
 
-	$('#getSomething').click(function(){
-		PhotoGallery.loadPhoto(PhotoGallery.config.currentPhoto);
+	// Next phoot button.
+	$('.control-next').click(function(){
+		PhotoGallery.updateCurrent('next');
 	});
 
+	// Register keys.
+	$(document).keydown(function(e){
+		console.log('ok');
+		// Left arrow key.
+		if(e.keyCode == 37){
+			
+			PhotoGallery.updateCurrent('prev');
+			
+			$('.control-prev').addClass('active');
+
+			setTimeout(function () { 
+				$('.control-prev').removeClass('active');
+			}, 200);
+		};
+		// Right arrow key.
+		if(e.keyCode == 39){
+			PhotoGallery.updateCurrent('next');
+
+			$('.control-next').addClass('active');
+
+			setTimeout(function () { 
+				$('.control-next').removeClass('active');
+			}, 200);
+		};
+	});
 
 });
