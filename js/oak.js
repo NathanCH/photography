@@ -3,15 +3,13 @@ var PhotoGallery = {
 
 	// Initialize App.
 	init: function(settings){
-		// Tell the world.
-		console.log('App Initiated');
 
 		// Configure App.
 		PhotoGallery.config = {
 			// Where the images will be displayed.
 			$photoPlaceHolder: $('.photo'),
 			// Path to images.
-			photoFolderPath: "imgs/photos/lowfi/",
+			photoFolderPath: "imgs/photos/midfi/",
 			// Value will be updated.
 			photosInDirectory: "0",
 			// Start at photo...
@@ -53,7 +51,7 @@ var PhotoGallery = {
 		}
 		if(direction == 'prev'){
 			if(PhotoGallery.config.currentPhoto == 0){
-				PhotoGallery.config.currentPhoto = 14;
+				PhotoGallery.config.currentPhoto = 12;
 			}else{
 				PhotoGallery.config.currentPhoto = PhotoGallery.config.currentPhoto - 1;
 			}
@@ -64,7 +62,7 @@ var PhotoGallery = {
 
 		// Fade image out and load current photo.
 		PhotoGallery.config.$photoPlaceHolder.fadeOut(100, function(){
-			PhotoGallery.loadPhoto(PhotoGallery.config.currentPhoto);			
+			PhotoGallery.loadPhoto(PhotoGallery.config.currentPhoto);
 		});
 	},
 
@@ -156,15 +154,14 @@ $(document).ready(function(){
 
 	// Register keys.
 	$(document).keydown(function(e){
-		console.log('ok');
 		// Left arrow key.
 		if(e.keyCode == 37){
-			
+
 			PhotoGallery.updateCurrent('prev');
-			
+
 			$('.control-prev').addClass('active');
 
-			setTimeout(function () { 
+			setTimeout(function () {
 				$('.control-prev').removeClass('active');
 			}, 200);
 		};
@@ -174,7 +171,7 @@ $(document).ready(function(){
 
 			$('.control-next').addClass('active');
 
-			setTimeout(function () { 
+			setTimeout(function () {
 				$('.control-next').removeClass('active');
 			}, 200);
 		};
