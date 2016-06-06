@@ -5,7 +5,7 @@
 $image_list = array();
 
 // Open /imgs/photos directory.
-if ($handle = opendir('../imgs/photos/lowfi')){
+if ($handle = opendir('../imgs/photos/midfi')){
 	
 	// Push each item to image list array.
 	while(false !== ($entry = readdir($handle))){
