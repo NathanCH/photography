@@ -11,8 +11,12 @@
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-});
-
 Route::resource('photos', 'PhotosController');
+
+Route::group(['prefix' => 'api'], function() {
+
+	Route::get('photos', 'ApiController@all');
+	Route::get('photos/{id}', 'ApiController@view');
+
+	Route::post('photos', 'ApiController@store');
+});
