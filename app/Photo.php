@@ -16,6 +16,11 @@ class Photo extends Model
     	'thumbnail_path'
     ];
 
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
+
     public function baseDir() {
         return 'storage/photos';
     }
@@ -24,8 +29,8 @@ class Photo extends Model
     {
         $this->attributes['name'] = $name;
 
-        $this->path = $this->baseDir() .'/'. $name;
-        $this->thumbnail_path = $this->baseDir() .'/tn-'. $name;
+        $this->path = '/' . $this->baseDir() .'/'. $name;
+        $this->thumbnail_path = '/' . $this->baseDir() .'/tn-'. $name;
     }
 
     public function delete()

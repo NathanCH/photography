@@ -23,4 +23,21 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * Save photo to a user.
+     */
+    public function addPhoto(Photo $photo)
+    {
+        return $this->photos()->save($photo);
+    }
+    /**
+     * A user has many photos.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function photos()
+    {
+        return $this->hasMany('App\Photo');
+    }
 }

@@ -11,12 +11,24 @@
 |
 */
 
+// Authentication routes...
+Route::get('login', 'Auth\AuthController@getLogin');
+Route::post('login', 'Auth\AuthController@postLogin');
+Route::get('logout', 'Auth\AuthController@logout');
+
+// Registration routes...
+Route::get('register', 'Auth\AuthController@getRegister');
+Route::post('register', 'Auth\AuthController@postRegister');
+
+// Photos routes...
 Route::resource('photos', 'PhotosController');
 
+// API routes...
 Route::group(['prefix' => 'api'], function() {
 
 	Route::get('photos', 'ApiController@all');
 	Route::get('photos/{id}', 'ApiController@view');
 
 	Route::post('photos', 'ApiController@store');
+	Route::delete('photos/{id}', 'ApiController@destroy');
 });
