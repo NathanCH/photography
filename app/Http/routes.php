@@ -22,12 +22,16 @@ Route::post('register', 'Auth\AuthController@postRegister');
 
 // Photos routes...
 Route::resource('photos', 'PhotosController');
+Route::get('photos/{id}/next', 'PhotosController@next');
+Route::get('photos/{id}/prev', 'PhotosController@prev');
 
 // API routes...
 Route::group(['prefix' => 'api'], function() {
 
 	Route::get('photos', 'ApiController@all');
-	Route::get('photos/{id}', 'ApiController@view');
+	Route::get('photos/{id}', 'ApiController@show');
+	Route::get('photos/{id}/next', 'ApiController@next');
+	Route::get('photos/{id}/prev', 'ApiController@prev');
 
 	Route::post('photos', 'ApiController@store');
 	Route::delete('photos/{id}', 'ApiController@destroy');

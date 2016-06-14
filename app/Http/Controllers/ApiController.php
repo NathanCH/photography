@@ -2,32 +2,37 @@
 
 namespace App\Http\Controllers;
 
-use App\Photo;
-use App\Http\PhotosRequest;
-use App\Jobs\AddPhotoJob;
 use Illuminate\Http\Request;
+
+use App\Http\Requests\PhotosRequest;
+use App\Repositories\PhotosRepository;
 
 class ApiController extends Controller
 {
+    protected $repository;
+
+    public function __construct(PhotosRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     public function all()
     {
-        return Photo::all();
+        return $this->repository->all();
     }
 
-    public function store(PhotosRequest $request)
+    public function show($id)
     {
-        $photo = $request->file('photo');
-
-        (new AddPhotoJob($photo))->save();
+        return $this->repository->find($id);
     }
 
-    public function view($id)
+    public function next($id)
     {
-        return Photo::findOrFail($id);
+        return $this->repository->next($id);
     }
 
-    public function destroy($id)
+    public function prev($id)
     {
-        return Photo::findOrFail($id)->delete();
+        return $this->repository->prev($id);
     }
 }
